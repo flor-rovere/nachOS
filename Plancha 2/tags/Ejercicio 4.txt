@@ -1,0 +1,6 @@
+Ejercicio 4:
+
+La inversion de prioridades no puede aplicarse a los semaforos
+debido a que los mismos no son exclusivos de los hilos que lo han
+adquirido, es decir, que no necesariamente el hilo que ejecute un 
+P() sea el mismo que ejecute un V().

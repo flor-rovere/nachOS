@@ -1,0 +1,180 @@
+Ejercicio 1:
+
+La capacidad de la memoria simulada para Nachos se encuentra en 
+code/machine/machine.hh, donde indica que:
+MEMORY_SIZE = NUM_PHYS_PAGES * PAGE_SIZE;
+siendo NUM_PHYS_PAGES = 32 y PAGE_SIZE = SECTOR_SIZE.
+Este ultimo valor se encuentra en code/machine/disk.hh y vale
+SECTOR_SIZE = 128
+Por lo tanto, MEMORY_SIZE = 32 * 128 = 4096 bytes.
+
+Ejercicio 2:
+
+Modificaría este valor cambiando el número de páginas físicas y 
+no el tamaño de la página puesto que en el ultimo caso debería 
+alterar la arquitectura de la máquina.
+
+Ejercicio 3:
+
+El tamaño del disco se encuentra en code/machine/disk.hh, donde 
+indica que la cantidad de bytes por sector es
+SECTOR_SIZE = 128
+y la cantidad de sectores por disco es
+NUM_SECTORS = SECTORS_PER_TRACK * NUM_TRACKS
+siendo SECTORS_PER_TRACK = 32 y NUM_TRACKS = 32.
+Es decir que NUM_SECTORS = 32 * 32 = 1024 y, por lo tanto, el
+tamaño del disco estara dado por 
+SECTOR_SIZE * NUM_SECTORS = 1024 * 128 = 131072 bytes.
+
+Ejercicio 4:
+
+NachOS simula 60 instrucciones de MIPS, definidas en
+code/machine/encoding.hh
+
+Ejercicio 5:
+
+OPP_ADD suma los registros rs y rt de la instruccion. Si se pro-
+duce un overflor, lanza una excepcion. Caso contrario,guarda el 
+valor de la suma en el registro rd.
+
+Ejercicio 6:
+
+En la función main tenemos:
+
+- DEBUG : /lib/utility.hh
+            |-> ASSERT : lib/utility.hh
+            |-> DebugIsEnabled : lib/utility.hh
+- Initialize : system.hh
+                |-> ASSERT : lib/utility.hh 
+                |-> RandomInit : machine/system_dep.hh
+                |-> DebugInit : lib/utility.hh
+                |-> CallOnUserAbort  machine/system_dep.hh
+                |-> Statistics : machine/statistics.hh
+                |-> Interrupt : machine/interrupt.hh
+                |-> Scheduler : scheduler.hh
+                |-> Timer : machine/timer.hh
+                |-> Thread : thread.hh
+                |-> PreemptiveScheduler : preemptive.hh
+                |-> Debugger : userprog/debugger.h
+                |-> Machine : machine/machine.hh
+                |-> SynchDisk : filesys/synch_disk.hh
+                |-> FileSystem : filesys/file_system.hh
+                |-> PostOffice : network/post.hh
+- ASSERT : lib/utility.hh
+- ThreadTest : thread_test.cc
+                |-> DEBUG : /lib/utility.hh
+                |-> Thread : thread.hh
+                |-> Fork : thread.hh
+                |-> SimpleThread : thread_test.cc
+
+Ejercicio 7:
+
+Se prefiere emular la CPU para permitir correr el SO sobre cual-
+quier anfitrión y que de esta manera sea más sencillamente adap-
+table a cualquier computadora, facilitando el proceso de aprendi-
+zaje.
+
+Ejercicio 8:
+
+Las banderas de depuración predefinidas se encuentran en 
+lib/utility.hh y son:
+ - '+' : activa todos los mensajes de depuracion.
+ - 't' : sistema de hilos.
+ - 's' : semaforos, candados, y variables de condicion.
+ - 'i' : interrupción de emulaciones.
+ - 'm' : emulación de la máquina virtual (requiere USER_PROGRAM).
+ - 'd' : emulación del disco (requiere FILESYS).
+ - 'f' : sistema de archivos (requiere FILESYS).
+ - 'a' : espacio de direcciones (requires USER_PROGRAM).
+ - 'n' : emulación de la red (requires NETWORK).
+
+Ejercicio 9:
+
+ASSERT toma una condición y si la misma es falsa, imprime el 
+error y finaliza la ejecución del programa.
+DEBUG imprime un mensaje si la bandera correspondiente está ac-
+tivada.
+
+Ejercicio 10:
+
+USER_PROGRAM : - filesys/Makefile
+               - network/Makefile
+               - userprog/Makefile
+               - vmem/Makefile
+FILESYS_NEEDED : - filesys/Makefile
+                 - network/Makefile
+                 - userprog/Makefile
+                 - vmem/Makefile
+FILESYS_STUB : - userprog/Makefile
+               - vmem/Makefile
+NETWORK : - network/Makefile
+
+Ejercicio 11:
+
+La diferencia entre las clases List y SynchList es que ambas son
+listas simplemente enlazadas pero la ultima posee restricciones
+adicionales. Las mismas son:
+ 1) Los hilos que intenten quitar un elemento de una lista debe-
+    ran esperar hasta que la lista tenga al menos un elemento.
+ 2) Solo un hilo por vez puede acceder a la estructura de la lis-
+    ta.
+Además, los métodos que proveen son distintos. Por ejemplo, List
+permite agregar elementos al comienzo de la lista y agregar ele-
+mentos manteniendo el orden.
+
+Ejercicio 12:
+
+Los archivos en los que se define la función main son:
+ - bin/coff2flat.c
+ - bin/coff2noff.c
+ - bin/disasm.c
+ - bin/main.c
+ - bin/out.c
+ - threads/main.cc
+ - userland/filetest.c
+ - userland/halt.c
+ - userland/matmult.c
+ - userland/shell.c
+ - userland/sort.c
+ - userland/tiny_shell.c
+La funcion main del ejecutable nachOS se encuentra definida en
+threads/main.cc.
+
+Ejercicio 13:
+
+nachOS soporta la siguiente linea de comandos:
+nachos [-d <debugflags>] [-p] [-rs <random seed #>] [-z]
+       [-s] [-x <nachos file>] [-tc <consoleIn> <consoleOut>]
+       [-f] [-cp <unix file> <nachos file>] [-pr <nachos file>]
+       [-rm <nachos file>] [-ls] [-D] [-tf]
+       [-n <network reliability>] [-id <machine id>]
+       [-tn <other machine id>]
+Opciones generales
+ * '-d' : imprime algunos mensajes de depuración.
+ * '-p' : activa mutitarea apropiativa para hilos del kernel.
+ * '-rs' : permite que 'Yield' ocurra en tiempos aleatorios (pero 
+           repetidos). De esta manera, habilitamos la multitarea
+           apropiativa. En caso contrario, tendriamos multitarea
+           cooperativa.
+ * '-z' : imprime informacion de la version y los derechos de co-
+          pia, y termina.
+Opciones USER_PROGRAM
+ * '-s' : permite que los programas de usuariose ejecuten de a un
+          paso a la vez.
+ * '-x' : ejecuta un programa de usuario.
+ * '-tc' : evalua la consola.
+Opciones FILESYS
+ * '-f' : formatea el disco físico.
+ * '-cp' : copia un archivo de UNIX a nachOS.
+ * '-pr' : imprime un archivo nachOS en la salida estandar.
+ * '-rm' : quita un archivo nachOS del sistema de archivos.
+ * '-ls' : lista el contenido del directorio nachOS.
+ * '-D' : imprime el contenido del sistema de archivos.
+ * '-tf' : evalua el rendimiento del sistema de archivos de 
+           nachOS.
+Opciones NETWORK
+ * '-n' : establece la fialidad de la red.
+ * '-id' : establece el host id de la maquina (necesario para la
+           red).
+ * '-tn' : ejecuta una evaluacion del software de la red de 
+           nachOS.
