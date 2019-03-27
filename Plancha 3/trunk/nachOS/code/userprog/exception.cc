@@ -109,7 +109,7 @@ IncrementPC()
 
 ///Funcion con la que haremos el form en la excepcion SC_Exec
 void
-ProcessCreator(void *args) //CHEQUEAR: que hago con el argumento? sirve?
+ProcessCreator(void *args) 
 {
     currentThread -> space -> InitRegisters();
     currentThread -> space -> RestoreState();
@@ -139,8 +139,8 @@ HandException(int type)
             else
                 DEBUG('a', "ERROR: User program not having a normal exit.\n");
             SpaceId spid = GetSpId(currentThread); // CHEQUEAR: se hace esto?
-            RemoveThread(spid);                    // idem
-            delete (currentThread -> space);       // idem
+            RemoveThread(spid);                    // CHEQUEAR: idem
+            delete (currentThread -> space);       // CHEQUEAR: idem
             currentThread -> Finish(st);
             break;
         }
@@ -153,7 +153,7 @@ HandException(int type)
             char outname[MAX_NAME];
             ReadStringFromUser(name, outname, MAX_NAME);
             OpenFile *exe = fileSystem -> Open(outname);
-            if (exe != NULL)
+            if (exe)
             {
                 AddressSpace *space = new AddressSpace(exe);
                 Thread *t = new Thread(strdup(outname), true, 0); 
@@ -171,16 +171,14 @@ HandException(int type)
             // int Join(SpaceId id);
             SpaceId spid = machine -> ReadRegister(4);
             Thread *t = GetThread(spid);
-            if (t != NULL)
+            if (t)
             { 
                 t -> Join();
                 machine -> WriteRegister(2, 0); 
                 RemoveThread(spid);
             }
             else
-            {
                 machine -> WriteRegister(2, -1);
-            }
             break;
         }
         case SC_Create:
@@ -237,11 +235,17 @@ HandException(int type)
             }
             else 
             {
-                DEBUG('a', "Leyendo desde un archivo\n");
                 OpenFile *ofile = currentThread -> GetFile(fid);
-                int numRead = ofile -> Read(info, size);
-                WriteBufferToUser(info, buf, numRead);
-                machine -> WriteRegister(2, numRead);
+                if (ofile){
+                    DEBUG('a', "Leyendo desde archivo con id: %d\n", fid);
+                    int numRead = ofile -> Read(info, size);
+                    WriteBufferToUser(info, buf, numRead);
+                    machine -> WriteRegister(2, numRead);
+                }
+                else{
+                    DEBUG('a', "ERROR: Leyendo desde un archivo erroneo con id: %d\n", fid);
+                    machine -> WriteRegister(2, -1);
+                }
             }
             break;
         }
@@ -257,26 +261,35 @@ HandException(int type)
                 DEBUG('a', "Escribiendo en la consola\n");
                 ReadBufferFromUser(buf, info, size);
                 for (int i = 0; i < size; i++)
-                {
                     synchConsole -> SynchPutChar(info[i]);
-                }
             }
             else if (fid == ConsoleInput)
                 DEBUG('a', "ERROR: Escribiendo en la entrada\n");
             else
             {
-                DEBUG('a', "Escribiendo en un archivo\n");
                 ReadBufferFromUser(buf, info, size);
                 OpenFile *ofile = currentThread -> GetFile(fid);
-                ofile -> Write(info, size);
+                if (ofile){
+                    DEBUG('a', "Escribiendo en archivo con id: %d\n", fid);
+                    ofile -> Write(info, size);
+                }
+                else
+                   DEBUG('a', "ERROR: Escribiendo en archivo erroneo con id: %d\n", fid);
             }
             break;
         }
         case SC_Close:
         {
             // void Close(OpenFileId id);
-            OpenFileId ofileid = machine -> ReadRegister(4);
-            currentThread -> CloseFile(ofileid);
+            OpenFileId fid = machine -> ReadRegister(4);
+            OpenFile *ofile = currentThread -> GetFile(fid);
+            if (ofile){
+                DEBUG('a', "Cerrando archivo erroneo con id: %d\n", fid);
+                delete ofile;
+                currentThread -> CloseFile(fid);
+            }
+            else
+                DEBUG('a', "ERROR: Cerrando archivo erroneo con id: %d\n", fid);
             break;
         }
         default:

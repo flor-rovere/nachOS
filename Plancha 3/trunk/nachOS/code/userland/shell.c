@@ -23,21 +23,16 @@ strlen(const char *s)
 static inline void
 WritePrompt(OpenFileId output)
 {
-    //static const char PROMPT[] = "--> "; CHEQUEAR: por que tira error ahora?
-    char PROMPT[] = "--> ";
+    static const char PROMPT[] = "--> "; 
     Write(PROMPT, sizeof PROMPT - 1, output);
 }
 
 static inline void
-//WriteError(const char *description, OpenFileId output) CHEQUEAR idem
-WriteError(char *description, OpenFileId output)
+WriteError(const char *description, OpenFileId output) 
 {
-    //static const char PREFIX[] = "Error: "; CHEQUEAR idem
-    char PREFIX[] = "Error: ";
-    //static const char SUFFIX[] = "\n"; CHEQUEAR idem
-    char SUFFIX[] = "\n";
-    //static const char EMPTYDESCR[] = "Empty description"; CHEQUEAR idem
-    char EMPTYDESCR[] = "Empty description";
+    static const char PREFIX[] = "Error: "; 
+    static const char SUFFIX[] = "\n"; 
+    static const char EMPTYDESCR[] = "Empty description"; 
 
     Write(PREFIX, sizeof PREFIX - 1, output);
     if (description)

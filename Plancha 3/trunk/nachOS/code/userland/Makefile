@@ -32,7 +32,7 @@ CPP = $(GCC_DIR)cpp
 INCLUDE_DIRS = -I../userprog -I../threads
 CFLAGS       = -std=c99 -G 0 -c $(INCLUDE_DIRS) -mips1
 
-PROGRAMS = halt shell tiny_shell matmult sort filetest create read write helloworld console consoleA consoleB prog1 exec callread2 interprete cat cp
+PROGRAMS = halt shell tiny_shell matmult sort filetest create read write helloworld console consoleA consoleB prog1 exec callread2 interprete cat cp exec2
 
 
 .PHONY: all clean clean-all

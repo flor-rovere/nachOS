@@ -239,7 +239,7 @@ AddThread(Thread *thread)
 {
     for(unsigned int i = 0; i < MAX_PID_THREADS; i++)
     {
-        if (threadsPid[i] == NULL)
+        if (!threadsPid[i])
         {
             threadsPid[i] = thread;
             return i;
