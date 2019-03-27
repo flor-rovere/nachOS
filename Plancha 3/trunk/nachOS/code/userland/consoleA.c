@@ -1,8 +1,10 @@
 #include "syscall.h"
 
-void
+int
 main(void)
 {
-    while(1)
+    for (unsigned i = 0; i < 100; i++)
         Write("A", 1, ConsoleOutput);
+    Write("Termino consoleA\n", 17, ConsoleOutput);
+    Exit(0);
 }

@@ -184,7 +184,7 @@ HandException(int type)
             }
             else
             {
-                DEBUG('a', "ERROR: No se puede realizar join a %s\n", t -> GetName());
+                DEBUG('a', "ERROR: No se puede realizar join.\n");
                 machine -> WriteRegister(2, -1);
             }
             break;

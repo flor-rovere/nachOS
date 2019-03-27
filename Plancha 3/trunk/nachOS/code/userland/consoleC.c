@@ -4,7 +4,7 @@ int
 main(void)
 {
     for (unsigned i = 0; i < 100; i++)
-        Write("B", 1, ConsoleOutput);
-    Write("Termino consoleB\n", 17, ConsoleOutput);
+        Write("C", 1, ConsoleOutput);
+    Write("Termino consoleC\n", 17, ConsoleOutput);
     Exit(0);
 }
