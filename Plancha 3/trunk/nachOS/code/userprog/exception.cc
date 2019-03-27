@@ -107,7 +107,7 @@ IncrementPC()
     machine -> WriteRegister(NEXT_PC_REG, pc);
 }
 
-///Funcion con la que haremos el form en la excepcion SC_Exec
+/// Funcion con la que haremos el fork en la excepcion SC_Exec
 void
 ProcessCreator(void *args) 
 {
@@ -155,6 +155,7 @@ HandException(int type)
             OpenFile *exe = fileSystem -> Open(outname);
             if (exe)
             {
+                DEBUG('a', "Realizando exec a %s\n", outname);
                 AddressSpace *space = new AddressSpace(exe);
                 Thread *t = new Thread(strdup(outname), true, 0); 
                 t -> space = space;
@@ -163,7 +164,10 @@ HandException(int type)
                 machine -> WriteRegister(2, spid);
             }
             else
+            {
+                DEBUG('a', "ERROR: No se puede realizar exec a %s\n", outname);
                 machine -> WriteRegister(2, -1);
+            }
             break;
         }
         case SC_Join:
@@ -173,12 +177,16 @@ HandException(int type)
             Thread *t = GetThread(spid);
             if (t)
             { 
+                DEBUG('a', "Realizando join de %s\n", t -> GetName());
                 t -> Join();
                 machine -> WriteRegister(2, 0); 
                 RemoveThread(spid);
             }
             else
+            {
+                DEBUG('a', "ERROR: No se puede realizar join a %s\n", t -> GetName());
                 machine -> WriteRegister(2, -1);
+            }
             break;
         }
         case SC_Create:
@@ -200,8 +208,17 @@ HandException(int type)
             char outname[MAX_NAME];
             ReadStringFromUser(name, outname, MAX_NAME);
             OpenFile *exe = fileSystem -> Open(outname);
-            OpenFileId ofileid = currentThread -> AddNewFile(exe);
-            machine -> WriteRegister(2, ofileid);
+            if (exe)
+            {
+                DEBUG('a', "Abriendo archivo %s\n", outname);
+                OpenFileId ofileid = currentThread -> AddNewFile(exe);
+                machine -> WriteRegister(2, ofileid);
+            }
+            else
+            {
+                DEBUG('a', "ERROR: No se pudo abrir el archivo %s\n", outname);
+                machine -> WriteRegister(2, -1);
+            }
             break;
         }
         case SC_Read:
@@ -230,9 +247,7 @@ HandException(int type)
                 machine -> WriteRegister(2, size);
             }
             else if (fid == ConsoleOutput)
-            {
                 DEBUG('a', "ERROR: Leyendo desde la salida\n");
-            }
             else 
             {
                 OpenFile *ofile = currentThread -> GetFile(fid);
