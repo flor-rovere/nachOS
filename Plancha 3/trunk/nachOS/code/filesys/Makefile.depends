@@ -164,10 +164,7 @@ synch_console.o: ../userprog/synch_console.cc \
  ../machine/translation_entry.hh ../userprog/address_space.hh \
  ../filesys/file_system.hh ../filesys/open_file.hh \
  ../machine/translation_entry.hh ../userprog/syscall.h ../lib/list.hh \
- ../lib/utility.hh ../machine/console.hh ../threads/system.hh \
- ../threads/scheduler.hh ../machine/interrupt.hh ../machine/statistics.hh \
- ../machine/timer.hh ../userprog/synch_console.hh ../lib/bitmap.hh \
- ../filesys/open_file.hh ../filesys/synch_disk.hh ../machine/disk.hh
+ ../lib/utility.hh ../machine/console.hh
 bitmap.o: ../lib/bitmap.cc ../lib/bitmap.hh ../lib/utility.hh \
  ../machine/system_dep.hh ../filesys/open_file.hh ../lib/utility.hh
 console.o: ../machine/console.cc ../machine/console.hh ../lib/utility.hh \
