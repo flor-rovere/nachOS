@@ -44,7 +44,7 @@ main(int argc, char **argv)
     else
     {
         Write("Error en la llamada a la funcion.\n", 34, ConsoleOutput);
-        return -1;
+        Exit(1);
     }
-    return 0;
+    Exit(0);
 }

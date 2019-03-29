@@ -3,8 +3,9 @@
 
 int main()
 {
-    char *argProgId[1];
+    char *argProgId[2];
     argProgId[0] = "../userland/prog1";
+    argProgId[1] = 0;
     
     Write("Ejecutando prog1\n", 17, ConsoleOutput);
 
@@ -15,5 +16,5 @@ int main()
 
     Write("Finalizo prog1\n", 15, ConsoleOutput);
 
-    Halt();
+    Exit(0);
 }

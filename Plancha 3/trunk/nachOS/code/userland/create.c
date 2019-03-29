@@ -4,6 +4,5 @@ int
 main(void)
 {
     Create("hola.txt");
-    Halt();
-    // Not reached.
+    Exit(0);
 }

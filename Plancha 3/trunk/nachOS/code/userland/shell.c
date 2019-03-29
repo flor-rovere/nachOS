@@ -121,10 +121,7 @@ main(void)
             continue;
         }
 
-        // Comment and uncomment according to whether command line arguments
-        // are given in the system call or not.
         const SpaceId newProc = Exec(line, argv);
-        //const SpaceId newProc = Exec(line);
         if (newProc == -1) {
             WriteError("cannot create new thread", OUTPUT);
             continue;

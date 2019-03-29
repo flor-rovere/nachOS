@@ -138,9 +138,9 @@ HandException(int type)
                 DEBUG('a', "Normal exit.\n");
             else
                 DEBUG('a', "ERROR: User program not having a normal exit.\n");
-            SpaceId spid = GetSpId(currentThread); // CHEQUEAR: se hace esto?
-            RemoveThread(spid);                    // CHEQUEAR: idem
-            delete (currentThread -> space);       // CHEQUEAR: idem
+            SpaceId spid = GetSpId(currentThread); 
+            RemoveThread(spid);                    
+            delete (currentThread -> space);       
             currentThread -> Finish(st);
             break;
         }

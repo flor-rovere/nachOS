@@ -153,12 +153,11 @@ Initialize(int argc, char **argv)
 #endif
     }
 
-    DebugInit(debugArgs);         // Initialize `DEBUG` messages.
-    stats = new Statistics();     // Collect statistics.
-    interrupt = new Interrupt;    // Start up interrupt handling.
-    scheduler = new Scheduler();  // Initialize the ready queue.
-//    if (randomYield)              // Start the timer (if needed). CHEQUEAR: borrar directamente?
-    timer = new Timer(TimerInterruptHandler, 0, randomYield);
+    DebugInit(debugArgs);                                     // Initialize `DEBUG` messages.
+    stats = new Statistics();                                 // Collect statistics.
+    interrupt = new Interrupt;                                // Start up interrupt handling.
+    scheduler = new Scheduler();                              // Initialize the ready queue.
+    timer = new Timer(TimerInterruptHandler, 0, randomYield); //Start the timer.
 
     threadToBeDestroyed = NULL;
 

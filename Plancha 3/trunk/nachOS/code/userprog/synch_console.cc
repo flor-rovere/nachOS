@@ -1,5 +1,4 @@
 #include "synch_console.hh"
-#include "threads/system.hh" //CHEQUEAR: borrar si se borra currentthread abajo
 
 static void
 ConsoleWriteDone(void *arg)
@@ -54,26 +53,18 @@ SynchConsole::~SynchConsole()
 void
 SynchConsole::SynchPutChar(char ch)
 {
-    DEBUG('c', "Synchputchar antes acquire en thread %s \n", currentThread->GetName()); //CHEQUEAR: borrar
     writelock -> Acquire();  // Solo una escritura a la vez
-    DEBUG('c', "Synchputchar despues acquire en thread %s \n", currentThread->GetName()); //CHEQUEAR: borrar
     console -> PutChar(ch); // Escribo en consola
     writesem -> P();        // Espero la interrupcion
-    DEBUG('c', "Synchputchar antes release en thread %s \n", currentThread->GetName()); //CHEQUEAR: borrar
     writelock -> Release(); // Libero el lock
-    DEBUG('c', "Synchputchar despues release en thread %s \n", currentThread->GetName()); //CHEQUEAR: borrar
 }
 
 char
 SynchConsole::SynchGetChar()
 {
-    DEBUG('c', "Synchgetchar antes acquire en thread %s \n", currentThread->GetName()); //CHEQUEAR: borrar
     readlock -> Acquire();           // Solo una lectura a la vez
-    DEBUG('c', "Synchgetchar despues acquire en thread %s \n", currentThread->GetName()); //CHEQUEAR: borrar
     readsem -> P();                 // Espero la interrupcion
     char ch = console -> GetChar(); // Leo desde consola
-    DEBUG('c', "Synchgetchar antes release en thread %s \n", currentThread->GetName()); //CHEQUEAR: borrar
     readlock -> Release();          // Libero el lock
-    DEBUG('c', "Synchgetchar despues release en thread %s \n", currentThread->GetName()); //CHEQUEAR: borrar
     return ch;
 }

@@ -41,13 +41,10 @@ int
 main(int argc, char **argv)
 {
     if (argc == 3)
-    {
         cp(argv[1], argv[2]);
-        return 0;
-    }
     else
     {
         Write("Error en la llamada a la funcion.\n", 34, ConsoleOutput);
-        return -1;
+        Exit(1);
     }
 }

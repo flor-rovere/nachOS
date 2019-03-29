@@ -51,7 +51,7 @@ Thread::Thread(const char *threadName, bool callsJoin, int prior)
     status   = JUST_CREATED;
 #ifdef USER_PROGRAM
     space    = NULL;
-    for(int i = 2; i < NUM_MAX_FILES; i++) //CHEQUAR: todos los archivos o a partir de la posición 2?
+    for(int i = 2; i < NUM_MAX_FILES; i++) 
         ofilesids[i] = NULL;
 #endif
 }
