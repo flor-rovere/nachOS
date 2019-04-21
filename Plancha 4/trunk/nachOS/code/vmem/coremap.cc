@@ -1,7 +1,7 @@
 #include "coremap.hh"
 #include "threads/system.hh"
 
-CoreMap::CoreMap() : BitMap(NUM_PHYS_PAGES)
+CoreMap::CoreMap() 
 {
     for (unsigned i = 0; i < NUM_PHYS_PAGES; i++)
     {
@@ -26,7 +26,7 @@ CoreMap::SelectVictim()
 int     
 CoreMap::Find(AddressSpace *o, unsigned vpn)
 {
-    int free = BitMap::Find();
+    int free = bitMap -> Find();
     unsigned vctm;
     if (free == -1)
     {

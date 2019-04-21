@@ -6,7 +6,7 @@
 #include "machine/machine.hh"
 #include "filesys/open_file.hh"
 
-class CoreMap : public BitMap{
+class CoreMap {
 public:
     CoreMap();
     ~CoreMap();

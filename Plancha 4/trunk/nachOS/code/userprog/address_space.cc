@@ -295,11 +295,15 @@ AddressSpace::InsertTLB(unsigned vpn)
 
         if (states[vpn] == IN_SWAP)
         {
+            DEBUG('c', "states[%d] == IN_SWAP\n", vpn);
             LoadFromSwap(vpn, physPage);
             states[vpn] = IN_TLB;
         }
         else
+        {
+            DEBUG('c', "states[%d] == IN_TLB\n", vpn);
             LoadVPNFromBinary(vpn, physPage);
+        }
     
         pT -> physicalPage = physPage;
         pT -> valid        = true;
